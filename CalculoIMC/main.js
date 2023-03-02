@@ -1,116 +1,65 @@
-/*const h1 = document.querySelector('.container h1');
-const data = new Date();
+const form = document.querySelector('#form');
 
-function GetWeekDays(diaSemana){
-    let diaSemanaTexto;
+form.addEventListener('submit', function(e){
+    e.preventDefault();
+    const inputPeso = e.target.querySelector('#peso');
+    const inputAltura = e.target.querySelector('#altura');
 
-    switch(diaSemana){
-        case 0: 
-            diaSemanaTexto = 'Domingo';
-            return diaSemanaTexto;
-        case 1:
-            diaSemanaTexto = 'Segunda-feira';
-            return diaSemanaTexto;
-        case 2:
-            diaSemanaTexto = 'Terca-feira';
-            return diaSemanaTexto;
-        case 3:
-            diaSemanaTexto = 'Quarta-feira';
-            return diaSemanaTexto;
-        case 4:
-            diaSemanaTexto = 'Quinta-feira';
-            return diaSemanaTexto;
-        case 5:
-            diaSemanaTexto = 'Sexta-feira';
-            return diaSemanaTexto;
-        case 6:
-            diaSemanaTexto = 'Sabado';
-            return diaSemanaTexto;
+    const peso = Number(inputPeso.value);
+    const altura = Number(inputAltura.value);
+
+    if(!peso){
+        setResultado('Peso inválido', false);
+        return;
     }
-}
-
-function getMonths(mes){
-    let mesTexto; 
-
-    switch(mes){
-        case 0:
-            mesTexto = 'Janeiro';
-            return mesTexto;
-        case 1:
-            mesTexto = 'Fevereiro';
-            return mesTexto;
-        case 2:
-            mesTexto = 'Março';
-            return mesTexto;
-        case 3:
-            mesTexto = 'Abril';
-            return mesTexto;
-        case 4:
-            mesTexto = 'Maio';
-            return mesTexto;
-        case 5:
-            mesTexto = 'Junho';
-            return mesTexto;
-        case 6:
-            mesTexto = 'Julho';
-            return mesTexto;
-        case 7:
-            mesTexto = 'Agosto';
-            return mesTexto;
-        case 8:
-            mesTexto = 'Setembro';
-            return mesTexto;
-        case 9:
-            mesTexto = 'Outubro';
-            return mesTexto;
-        case 10:
-            mesTexto = 'Novembro';
-            return mesTexto;
-        case 11:
-            mesTexto = 'Dezembro';
-            return mesTexto;
+   
+    if(!altura){
+        setResultado('Altura inválida', false);
+        return;
     }
+
+    const imc = getImc(peso, altura);
+    const nivelImc = getNivelImc(imc);
+
+    const msg = `Seu IMC é ${imc} (${nivelImc}).`;
+
+    setResultado(msg, true);
+});
+
+function getNivelImc(imc) {
+    const nivel = ['Abaixo do peso', 'Peso normal', 'Sobrepeso', 'Obesidade grau 1', 'Obesidade grau 2', 'Obesidade grau 3']; 
+
+    if(imc >= 39.9) return nivel[5];
+    if(imc >= 34.9) return nivel[4];
+    if(imc >= 29.9) return nivel[3];
+    if(imc >= 24.9) return nivel[2];
+    if(imc >= 18.5) return nivel[1];
+    if(imc < 18.5) return nivel[0];   
 }
 
-function criateDate(data){
-    const DiaSemana = data.getDay();
-    const mes  = data.getMonth();
- 
-    const mesTexto = getMonths(mes);
-    const diaSemanaTexto = GetWeekDays(DiaSemana);
-
-    return `${diaSemanaTexto}, ${data.getDate()} de ${mesTexto} de ${data.getFullYear()} ${data.getHours()}:${data.getMinutes()}`
+function getImc(peso, altura){
+    const imc = peso / altura ** 2;
+    return imc.toFixed(2);
 }
 
-h1.innerHTML = criateDate(data);
-*/
-
-/*const h1 = document.querySelector('.container h1');
-const data = new Date();
-h1.innerHTML = data.toLocaleDateString('pt-BR', {dateStyle: 'full', timeStyle: 'short' });
-*/
-
-const h1 = document.querySelector('.container h1');
-const data = new Date();
-
-function GetWeekDays(diaSemana){
-    const diaSemanaTexto = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
-    return diaSemanaTexto[diaSemana];    
+function criaP(){
+    const p = document.createElement('p');
+    return p;
 }
 
-function getMonths(mes){
-     const meses = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
-     return meses[mes];
+
+function setResultado(msg, isValid){
+    const resultado = document.querySelector('#resultado');
+    resultado.innerHTML = '';
+    
+    const p = criaP();
+
+        if (isValid){
+            p.classList.add('paragrafo-resultado');  
+        } else {
+            p.classList.add('bad');
+        }
+    
+    p.innerHTML = msg;
+    resultado.appendChild(p);
 }
-
-function criateDate(data){
-    const DiaSemana = data.getDay();
-    const mes  = data.getMonth();
- 
-    const mesTexto = getMonths(mes);
-    const diaSemanaTexto = GetWeekDays(DiaSemana);
-
-    return `${diaSemanaTexto}, ${data.getDate()} de ${mesTexto} de ${data.getFullYear()} ${data.getHours()}:${data.getMinutes()}`
-}
-
-h1.innerHTML = criateDate(data);
